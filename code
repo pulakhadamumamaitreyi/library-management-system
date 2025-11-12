@@ -1,0 +1,126 @@
+from datetime import datetime, timedelta
+class Book:
+def __init__(self, title, author, isbn, genre, quantity):
+    self.title = title
+    self.author = author
+    self.isbn = isbn
+    self.genre = genre
+    self.quantity = quantity
+def update_info(self, title=None, author=None, genre=None, quantity=None):
+    if title:
+        self.title = title
+    if author:
+        self.author = author
+    if genre:
+        self.genre = genre
+    if quantity is not None:
+        self.quantity = quantity
+def __str__(self):
+      return f"{self.title} by {self.author} | ISBN: {self.isbn} | Genre: {self.genre} | Quantity: {self.quantity}"
+class Borrower:
+  
+def __init__(self, name, contact, member_id):
+      self.name = name
+      self.contact = contact
+      self.member_id = member_id
+      self.borrowed_books = {}
+
+def update_info(self, name=None, contact=None):
+      if name:
+          self.name = name
+      if contact:
+          self.contact = contact
+
+def __str__(self):
+      return f"{self.name} | ID: {self.member_id} | Contact: {self.contact}"
+
+class Library:
+    def __init__(self):
+      self.books = {}
+      self.borrowers = {}
+  
+def add_book(self, book):
+      if book.isbn in self.books:
+            self.books[book.isbn].quantity += book.quantity
+      else:
+            self.books[book.isbn] = book
+
+def update_book(self, isbn, **kwargs):
+      if isbn in self.books:
+          self.books[isbn].update_info(**kwargs)
+      else:
+          print("Book not found!")
+
+def remove_book(self, isbn):
+      if isbn in self.books:
+          del self.books[isbn]
+      else:
+          print("Book not found!")
+
+def add_borrower(self, borrower):
+      self.borrowers[borrower.member_id] = borrower
+
+def update_borrower(self, member_id, **kwargs):
+      if member_id in self.borrowers:
+          self.borrowers[member_id].update_info(**kwargs)
+      else:
+          print("Borrower not found!")
+
+def remove_borrower(self, member_id):
+        if member_id in self.borrowers:
+            del self.borrowers[member_id]
+        else:
+            print("Borrower not found!")
+
+def borrow_book(self, member_id, isbn, days=7):
+        if member_id not in self.borrowers:
+            print("Borrower not registered.")
+            return
+        if isbn not in self.books or self.books[isbn].quantity <= 0:
+            print("Book not available.")
+            return
+
+        borrower = self.borrowers[member_id]
+        due_date = datetime.now() + timedelta(days=days)
+        borrower.borrowed_books[isbn] = due_date
+        self.books[isbn].quantity -= 1
+        print(f"Book borrowed successfully. Due date: {due_date.strftime('%Y-%m-%d')}")
+
+def return_book(self, member_id, isbn):
+      if member_id not in self.borrowers:
+          print("Borrower not found.")
+          return
+      borrower = self.borrowers[member_id]
+      if isbn in borrower.borrowed_books:
+          due_date = borrower.borrowed_books.pop(isbn)
+          self.books[isbn].quantity += 1
+        if datetime.now() > due_date:
+              print("Book returned late! Please pay overdue charges.")
+        else:
+              print("Book returned successfully.")
+        else:
+             print("No record of this book being borrowed.")
+def search_books(self, keyword):
+        results = [
+            book for book in self.books.values()
+            if keyword.lower() in book.title.lower()
+            or keyword.lower() in book.author.lower()
+            or keyword.lower() in book.genre.lower()
+            ]
+           if results:
+            print("\nSearch Results:")
+            for book in results:
+                print(f"{book.title} | Available: {book.quantity}")
+           else:
+                print("No books found.")
+
+  
+def display_all_books(self):
+        print("\nAll Books in Library:")
+        for book in self.books.values():
+            print(book)
+
+def display_borrowers(self):
+        print("\nAll Borrowers:")
+        for borrower in self.borrowers.values():
+            print(borrower)
